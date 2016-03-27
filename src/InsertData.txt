@@ -1,0 +1,36 @@
+insert into merchant (name, charge, period, minSum, bankName, swift, account) values('Jim Smith Ltd.', 5.1, 1, 100.0, 'Chase Manhatten', 'AA245BXW', '247991002');
+insert into merchant (name, charge, period, minSum, bankName, swift, account) values('Domby and sun Co.', 2.8, 2, 20.0, 'Paribas', 'XTW2NNM', '1188532009');
+insert into merchant (name, charge, period, minSum, bankName, swift, account) values('Victoria Shop Ltd.', 3.4, 3, 500.0, 'Swedbank', 'SWEE34YY', '557880234');
+insert into merchant (name, charge, period, minSum, bankName, swift, account) values('Software & Digital goods', 4.9, 1, 160.0, 'Credi Leone', 'FRTOPM', '367920489');
+
+insert into customer(name, address, email, ccNo, ccType, maturity)
+    values('Dan Nelis','Vosselaar st. 19, Trnaut, Belgium', 'Dan@adw.com', '11345694671214', 'MasterCard', '2014-07-31');
+insert into customer(name, address, email, ccNo, ccType, maturity)
+    values('Mark Wolf','Olaf st. 11, Stockholm, Sweden', 'mwolf@yahoo.com', '44402356988712', 'Visa', '2012-09-30');
+insert into customer(name, address, email, ccNo, ccType, maturity)
+    values('Stein Brown','Oxford st. 223, Stockholm, Sweden', 'steinB@yahoo.com', '41233576012434', 'Visa', '2015-11-30');
+
+insert into payment(dt, merchantId, customerId, goods, sumPayed)
+    values('2012-07-12 10:00:14', 3, 1, 'CD Europe Maps', 12.08);
+insert into payment(dt, merchantId, customerId, goods, sumPayed)
+    values('2012-06-22 18:21:10', 4, 3, 'NOD32 Antivirus', 33.80);
+insert into payment(dt, merchantId, customerId, goods, sumPayed)
+    values('2012-07-02 00:00:17', 1, 1, 'Railway return ticket Brussel-Paris', 255.58);
+insert into payment(dt, merchantId, customerId, goods, sumPayed)
+    values('2012-07-06 11:22:40', 1, 2, 'Railway ticket Stockholm - Oslo', 1325.00);
+insert into payment(dt, merchantId, customerId, goods, sumPayed)
+    values('2012-07-10 11:10:45', 3, 2, 'CD African music', 7.65);
+insert into payment(dt, merchantId, customerId, goods, sumPayed)
+    values('2012-06-30 12:00:00', 2, 1, 'Acer computer', 654.00);
+insert into payment(dt, merchantId, customerId, goods, sumPayed)
+    values('2012-07-02 22:28:50', 4, 2, 'NOD32 Antivirus', 33.80);
+insert into payment(dt, merchantId, customerId, goods, sumPayed)
+    values('2012-07-09 02:12:53', 4, 3, 'MS Office', 400.23);
+insert into payment(dt, merchantId, customerId, goods, sumPayed)
+    values('2012-07-15 22:28:50', 2, 2, 'Dell computer', 768.00);
+
+update merchant set lastSent = '2015-02-21' where id = 1;
+update merchant set lastSent = '2015-02-21' where id = 2;
+update merchant set lastSent = '2015-02-21' where id = 3;
+update merchant set lastSent = '2015-02-28' where id = 4;
+

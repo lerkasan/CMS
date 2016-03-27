@@ -1,0 +1,9 @@
+update PAYMENT p set CHARGEPAYED = SUMPAYED*(select charge from MERCHANT m where m.id = p.merchantId)/100;
+
+update merchant m set needToSend = (select sum(sumPayed-chargePayed) from payment p where m.id = p.merchantId group by merchantId );
+
+update merchant m set needToSend = (select sum(sumPayed-chargePayed) from payment p where (date(p.dt) > m.lastSent) and (m.id = p.merchantId) group by merchantId );
+
+select p.merchantId, m.name, sum(p.chargePayed) as income from payment p right outer join merchant m on m.id = p.merchantId group by p.merchantId, m.name;
+
+select p.merchantId, m.name, sum(p.chargePayed) as income from payment p, merchant m where m.id = p.merchantId group by p.merchantId, m.name;

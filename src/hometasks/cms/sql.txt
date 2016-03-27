@@ -1,0 +1,85 @@
+update merchant set sent = 0;
+update merchant set lastSent = '2015-02-21' where id = 1;
+update merchant set lastSent = '2015-02-21' where id = 2;
+update merchant set lastSent = '2015-02-21' where id = 3;
+update merchant set lastSent = '2015-02-28' where id = 4;
+
+!!!update payments to set year 2015
+
+update PAYMENT p set CHARGEPAYED = SUMPAYED*(select charge from MERCHANT m where m.id = p.merchantId)/100;
+update merchant m set needToSend = (select sum(sumPayed-chargePayed) from payment p where (date(p.dt) > m.lastSent) and (m.id = p.merchantId) group by merchantId );
+
+
+
+
+update merchant m set needToSend = (select sum(sumPayed-chargePayed) from payment p where m.id = p.merchantId group by merchantId );
+
+!!!!  update merchant m set needToSend = (select sum(sumPayed-chargePayed) from payment p where (date(p.dt) > m.lastSent) and (m.id = p.merchantId) group by merchantId );
+
+!!!! select p.merchantId, m.name, sum(p.chargePayed) as income from payment p left outer join merchant m on m.id = p.merchantId group by p.merchantId, m.name;
+
+select p.merchantId, m.name, sum(p.chargePayed) as income from payment p, merchant m where m.id = p.merchantId group by p.merchantId, m.name;
+
+
+select m.id, m.needToSend from merchant m where (m.needToSend > m.minSum) and ({fn timestampdiff(SQL_TSI_DAY, m.lastSent, CURRENT_DATE)} > 5);
+
+select {fn timestampdiff(SQL_TSI_DAY, {d '2000-01-01'}, {d '2000-01-10'})}
+as date_diff from oneRow;
+
+select {fn timestampdiff(SQL_TSI_DAY, m.lastSent, CURRENT_DATE)} as diff from merchant m;
+
+
+select m.id, m.needToSend from merchant m where (m.needToSend > m.minSum) and ({fn timestampdiff(SQL_TSI_DAY, m.lastSent, CURRENT_DATE)} > 5 );
+
+select m.id, m.needToSend, CURRENT_DATE, 0 from merchant m where (m.needToSend > m.minSum) and ({fn timestampdiff(SQL_TSI_DAY, m.lastSent, CURRENT_DATE)} > 5 );
+
+
+!!!!  select m.id, m.needToSend, CURRENT_DATE, 0 from merchant m where (m.needToSend > m.minSum) and ({fn timestampdiff(SQL_TSI_DAY, m.lastSent, CURRENT_DATE)} > (select p.days from periods p where m.period = p.id) );
+
+
+!!!! insert into transMoney (merchantId, sumSent, sentDate, status) select m.id, m.needToSend, CURRENT_DATE, false from merchant m where (m.needToSend > m.minSum) and ({fn timestampdiff(SQL_TSI_DAY, m.lastSent, CURRENT_DATE)} > (select p.days from periods p where m.period = p.id) );
+
+
+!!!! update merchant m set m.lastSent = CURRENT_DATE, m.sent = m.sent + ( select t.sumSent from transMoney t where (t.merchantId = m.id) and (t.sentDate = CURRENT_DATE) ) where id in (1,2,3,4) ;
+
+!!!! update merchant set needToSend = 0 where id in (select merchantId from transMoney where status = false);
+
+!!!! select t.id, m.name, t.sumSent, t.status from transMoney t left outer join merchant m on t.merchantId = m.id 
+
+!!!! select t.id, m.name, t.sumSent, t.sentDate, t.status from transMoney t left outer join merchant m on t.merchantId = m.id order by t.sentDate, t.sumSent;
+
+!!!! update merchant m set needToSend = (select sum(sumPayed-chargePayed) from payment p where (date(p.dt) > m.lastSent) and (m.id = p.merchantId) group by merchantId );
+!!!! delete from transMoney;
+
+create table periods
+(
+   id smallint not null generated always as identity,
+   days smallint not null,
+   primary key (id)
+);
+
+insert into periods (days) values (7);
+insert into periods (days) values (10);
+insert into periods (days) values (30);
+
+alter table merchant
+drop column period;
+
+alter table merchant
+add column period smallint not null default 1 constraint periods_fk references periods;
+
+
+drop table transMoney;
+create table transMoney
+(
+   id int not null generated always as identity,
+   merchantId int not null constraint merchmoney_fk references merchant,
+   sumSent decimal(19,2) not null,
+   sentDate date not null,
+   status smallint not null,
+   primary key (id)
+);
+
+
+update transMoney set status = 1 where id = (select id from transMoney where status = 0 having sum(sumSent) < 500 order by sentDate, sumSent);
+select id from (select id from transMoney where status = 0 order by sentDate, sumSent) having sum(sumSent) < 500;
