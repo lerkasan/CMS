@@ -151,6 +151,7 @@ public class MoneyTransfer {
 		try (Statement stm = con.createStatement()) {
 			String sql = "select t.id, t.merchantId, m.name, t.sumSent, t.sentDate, t.status " +
 						 "from transMoney t left outer join merchant m on t.merchantId = m.id " +
+						 "where t.status = 0 " +
 						 "order by t.sentDate, t.sumSent";
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {

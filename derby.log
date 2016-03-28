@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Mon Mar 28 09:55:43 EEST 2016:
+ Производится загрузка Derby версии The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): экземпляр a816c00e-0153-bc01-b91b-0000070687d0
+в каталоге базы данных E:\eclipse_workspace\cm2 sun.misc.Launcher$AppClassLoader@4e0e2f2a 
+
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_66-b18
+user.dir=E:\eclipse_workspace\CMS
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
+derby.system.home=null
+Запущен загрузчик классов базы данных - derby.database.classpath=''
